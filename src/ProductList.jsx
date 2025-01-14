@@ -2,7 +2,10 @@ import React, { useState, useEffect } from 'react';
 import './ProductList.css'
 import CartItem from './CartItem';
 import { addItem } from './CartSlice';
+import { useDispatch, useSelector } from 'react-redux';
 function ProductList() {
+    const dispatch = useDispatch();
+    const cartItems = useSelector(state => state.cart.items);
     const [showCart, setShowCart] = useState(false);
     const [showPlants, setShowPlants] = useState(false); // State to control the visibility of the About Us page
     const [addedToCart, setAddedToCart] = useState({});
@@ -249,11 +252,22 @@ function ProductList() {
         setShowCart(false);
     };
 
-    
+    const handleAddToCart = (product) => {
+        dispatch(addItem(product));
+        setAddedToCart((prevState) => ({
+           ...prevState,
+           [product.name]: true, // Set the product name as key and value as true to indicate it's added to cart
+         }));
+    };
+
+    const totalQuantity = cartItems.reduce((total, item) => total + item.quantity, 0);
 
     return (
         <div>
             <div className="navbar" style={styleObj}>
+            <div>
+                    <h1>Total Items in Cart: {totalQuantity}</h1>
+                </div>
                 <div className="tag">
                     <div className="luxury">
                         <img src="https://cdn.pixabay.com/photo/2020/08/05/13/12/eco-5465432_1280.png" alt="" />
