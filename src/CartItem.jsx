@@ -8,10 +8,21 @@ const CartItem = ({ onContinueShopping }) => {
   const dispatch = useDispatch();
 
   // Calculate total amount for all products in the cart
-  const calculateTotalAmount = () => {
+//   const calculateTotalAmount = () => {
+//     return cart.reduce((total, item) => {
+//         return total + (item.quantity * item.cost);
+//       }, 0);
+//   };
+
+const calculateTotalAmount = () => {
     return cart.reduce((total, item) => {
+      // Vérification si les propriétés 'quantity' et 'cost' existent et sont des nombres
+      if (item.quantity && item.cost) {
         return total + (item.quantity * item.cost);
-      }, 0);
+      }
+      // Si les propriétés ne sont pas valides, on ne les inclut pas dans le total
+      return total;
+    }, 0);
   };
 
   const handleContinueShopping = (e) => {
